@@ -101,13 +101,13 @@ def main():
 
     # Sidebar for other inputs
     st.sidebar.header('Input Parameters')
-    initial_portfolio = st.sidebar.text_input('Initial Portfolio Value (€)', 
+    initial_portfolio = st.sidebar.text_input('Initial Portfolio Value ($)', 
                                               value='5,000,000',
                                               help="The total value of your investments at the start of the simulation.")
     initial_portfolio = parse_number(initial_portfolio)
 
-    initial_expenses = st.sidebar.text_input('Initial Annual Expenses (€)', 
-                                             value='80,000',
+    initial_expenses = st.sidebar.text_input('Initial Annual Expenses ($)', 
+                                             value='100,000',
                                              help="Your expected annual living expenses at the start of the simulation.")
     initial_expenses = parse_number(initial_expenses)
 
@@ -115,27 +115,27 @@ def main():
                                        0.0, 0.10, 0.02, 0.001,
                                        help="The expected annual increase in the cost of goods and services.")
     tax_rate = st.sidebar.slider('Tax Rate', 
-                                 0.0, 0.50, 0.26, 0.01,
-                                 help="The rate at which investment gains are taxed.")
+                                 0.0, 0.50, 0.30, 0.01,
+                                 help="The rate at which investment gains are taxed, on average.")
     current_year = st.sidebar.number_input('Current Year', 
                                            value=2025, step=1,
                                            help="The year in which the simulation starts.")
     current_age = st.sidebar.number_input('Current Age', 
-                                          value=46, step=1,
+                                          value=50, step=1,
                                           help="Your current age at the start of the simulation.")
 
     st.sidebar.subheader('Income Sources')
-    income1_amount = st.sidebar.text_input('Income 1 Amount (€)', 
+    income1_amount = st.sidebar.text_input('Income 1 Amount ($)', 
                                            value='100,000',
-                                           help="The annual amount of your first additional income source.")
+                                           help="The annual amount of your first additional income source, net of income tax.")
     income1_amount = parse_number(income1_amount)
     income1_duration = st.sidebar.number_input('Income 1 Duration (years)', 
-                                               value=3, step=1,
-                                               help="The number of years you expect to receive Income 1.")
+                                               value=5, step=1,
+                                               help="The number of years you expect to receive Income 1, will be inflation adjusted.")
 
-    income2_amount = st.sidebar.text_input('Income 2 Amount (€)', 
+    income2_amount = st.sidebar.text_input('Income 2 Amount ($)', 
                                            value='50,000',
-                                           help="The annual amount of your second additional income source.")
+                                           help="The annual amount of your second additional income source, net of income tax.")
     income2_amount = parse_number(income2_amount)
     income2_duration = st.sidebar.number_input('Income 2 Duration (years)', 
                                                value=10, step=1,
@@ -159,17 +159,17 @@ def main():
     st.sidebar.subheader('Investment Allocations')
     investments = [
         {"amount": parse_number(st.sidebar.text_input('Cash Amount (€)', value='500,000', help="Amount invested in low-risk, low-return assets")),
-         "return": st.sidebar.slider('Cash Return', 0.0, 0.10, 0.02, 0.001, help="Expected annual return for cash investments"),
+         "return": st.sidebar.slider('T-bills/Cash Return', 0.0, 0.10, 0.02, 0.001, help="Expected annual return for cash investments"),
          "volatility": st.sidebar.slider('Cash Volatility', 0.0, 0.20, 0.01, 0.001, help="Expected annual volatility for cash investments"),
          "type": "cash"},
         {"amount": parse_number(st.sidebar.text_input('Cash Plus Amount (€)', value='500,000', help="Amount invested in slightly higher-risk, higher-return assets")),
-         "return": st.sidebar.slider('Cash Plus Return', 0.0, 0.10, 0.03, 0.001, help="Expected annual return for cash plus investments"),
-         "volatility": st.sidebar.slider('Cash Plus Volatility', 0.0, 0.20, 0.04, 0.001, help="Expected annual volatility for cash plus investments"),
-         "type": "cash plus"},
+         "return": st.sidebar.slider('Medium Bonds Return', 0.0, 0.10, 0.03, 0.001, help="Expected annual return for cash plus investments"),
+         "volatility": st.sidebar.slider('Medium Bonds Volatility', 0.0, 0.20, 0.04, 0.001, help="Expected annual volatility for cash plus investments"),
+         "type": "Medium Bonds"},
         {"amount": parse_number(st.sidebar.text_input('RP Invest Amount (€)', value='4,000,000', help="Amount invested in higher-risk, higher-return assets")),
-         "return": st.sidebar.slider('RP Invest Return', 0.0, 0.20, 0.06, 0.001, help="Expected annual return for RP investments"),
-         "volatility": st.sidebar.slider('RP Invest Volatility', 0.0, 0.30, 0.10, 0.001, help="Expected annual volatility for RP investments"),
-         "type": "RP Invest"}
+         "return": st.sidebar.slider('Bonds/Equities/Commodities Portfolio', 0.0, 0.20, 0.06, 0.001, help="Expected annual return for RP investments"),
+         "volatility": st.sidebar.slider('Portfolio Volatility', 0.0, 0.30, 0.10, 0.001, help="Expected annual volatility for RP investments"),
+         "type": "Bonds/Equities/Commodities Portfolio"}
     ]
 
     if run_simulation:
